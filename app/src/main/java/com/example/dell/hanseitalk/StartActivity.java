@@ -1,13 +1,18 @@
 package com.example.dell.hanseitalk;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class StartActivity extends AppCompatActivity {
-
 
     private EditText user_chat, user_edit;
     private Button user_next;
@@ -38,7 +42,8 @@ public class StartActivity extends AppCompatActivity {
         user_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user_edit.getText().toString().equals("") || user_chat.getText().toString().equals("")){
+                if (user_edit.getText().toString().equals("") || user_chat.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "입력을 다시 확인해주세요", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Intent intent = new Intent(StartActivity.this, ChatActivity.class);
@@ -52,9 +57,17 @@ public class StartActivity extends AppCompatActivity {
     }
 
 
-    private void showChatList(){
+    private void showChatList() {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         chat_list.setAdapter(adapter);
+        chat_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String chatName = adapter.getItem(position);
+                getChatNameDialog(chatName);
+
+            }
+        });
 
         databaseReference.child("chat").addChildEventListener(new ChildEventListener() {
             @Override
@@ -83,4 +96,34 @@ public class StartActivity extends AppCompatActivity {
             }
         });
     }
+
+    String getChatNameDialog(final String chatName) {
+        final EditText edittext = new EditText(this);
+        final String[] chatNameBuffer = new String[1];
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Chat name");
+        builder.setView(edittext);
+        builder.setPositiveButton("입력",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        chatNameBuffer[0] = edittext.getText().toString();
+                        String userName = chatNameBuffer[0];
+                        Intent intent = new Intent(StartActivity.this, ChatActivity.class);
+                        intent.putExtra("chatName", chatName);
+                        intent.putExtra("userName", userName);
+                        startActivity(intent);
+                    }
+                });
+        builder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
+
+        return chatNameBuffer[0];
+    }
+
 }

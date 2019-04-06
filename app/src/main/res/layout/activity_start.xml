@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:context=".StartActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_alignParentTop="true">
+            android:gravity="center">
 
             <TextView
                 android:layout_width="match_parent"
@@ -30,21 +27,19 @@
                 android:gravity="center"/>
             <EditText
                 android:id="@+id/user_chat"
-                android:layout_width="200dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:hint="CHAT NAME"
-                android:layout_gravity="left"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginBottom="20dp"/>
 
             <EditText
                 android:id="@+id/user_edit"
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:hint="USER NAME"
-                android:layout_gravity="right"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginBottom="20dp"/>
 
